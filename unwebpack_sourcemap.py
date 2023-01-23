@@ -22,6 +22,10 @@ import requests
 from bs4 import BeautifulSoup, SoupStrainer
 
 
+def _write_content_to_handle(f, write_path: str, content: str):
+    print("Writing %s..." % os.path.basename(write_path))
+    f.write(content)
+
 class SourceMapExtractor(object):
     """Primary SourceMapExtractor class. Feed this arguments."""
 
@@ -182,9 +186,22 @@ class SourceMapExtractor(object):
                 continue
 
             os.makedirs(os.path.dirname(write_path), mode=0o755, exist_ok=True)
-            with open(write_path, 'w', encoding='utf-8', errors='ignore', newline='') as f:
-                print("Writing %s..." % os.path.basename(write_path))
-                f.write(content)
+
+            # TODO(jamesmishra): Figure out why `content` is None sometimes.
+            if content is None:
+                print("ERROR: Content was None for path", source)
+                continue
+
+            # TODO(jamesmishra): Handle IsADirectoryError better.
+            open_args = dict(mode='w', encoding='utf-8', errors='ignore', newline='')
+            try:
+                with open(write_path, **open_args) as f:
+                    _write_content_to_handle(f, write_path, content)
+            except IsADirectoryError:
+                new_write_path = write_path + "--FILE"
+                with open(new_write_path, **open_args) as f:
+                    _write_content_to_handle(f, new_write_path, content)
+
 
     def _get_sanitised_file_path(self, sourcePath):
         """Sanitise webpack paths for separators/relative paths"""
