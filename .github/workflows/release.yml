@@ -9,11 +9,7 @@ on:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
-permissions:
-  contents: write
-  deployments: write
-  id-token: write
-  packages: write
+permissions: write-all
 
 jobs:
   release:
@@ -51,7 +47,7 @@ jobs:
 
     - name: Get the version from the GitHub tag.
       id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
+      run: echo "{VERSION}={${GITHUB_REF/refs\/tags\/v/}}" >> $GITHUB_OUTPUT
 
     - name: Build the wheel (Ubuntu only).
       id: publish_to_pypi
