@@ -6,6 +6,8 @@ This is a Python command line application that parses Webpack sourcemaps and ret
 
 unwebpack-sourcemap can process source maps on the local filesystem, or it can discover source maps on a remote website.
 
+This repository is a fork. The original unwebpack-sourcemap was authored by [rarecoil][2].
+
 ## Introduction
 If you're unfamiliar with source maps, you can read:
 * ["Introduction to JavaScript Source Maps"][5] by Google Chrome Developers
