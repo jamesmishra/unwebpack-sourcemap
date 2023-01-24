@@ -66,7 +66,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ github.ref }}
-        name: Release ${{ github.ref }}
+        name: Release v${{ steps.get_version.outputs.VERSION }}
         draft: false
         prerelease: false
         fail_on_unmatched_files: true
