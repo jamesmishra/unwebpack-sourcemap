@@ -351,7 +351,8 @@ class SourceMapExtractorError(Exception):
     pass
 
 
-if __name__ == "__main__":
+def main():
+    """Entrypoint for the unwebpack-sourcemap CLI."""
     parser = argparse.ArgumentParser(
         description="A tool to extract code from Webpack sourcemaps. Turns black boxes into gray ones.")
     parser.add_argument("-l", "--local", action="store_true", default=False)
@@ -368,9 +369,13 @@ if __name__ == "__main__":
     parser.add_argument("output_directory", help="Directory to output from sourcemap to.")
 
     if (len(sys.argv) < 3):
-        parser.print_usage()
+        parser.print_help()
         sys.exit(1)
 
     args = parser.parse_args()
     extractor = SourceMapExtractor(vars(args))
     extractor.run()
+
+
+if __name__ == "__main__":
+    main()
