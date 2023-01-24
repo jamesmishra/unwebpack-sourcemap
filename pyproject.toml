@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "unwebpack-sourcemap"
-version = "0.1.0"
+version = "0.0.0"
 description = "Recovers uncompiled TypeScript sources from Webpack sourcemaps. A fork of rarecoil's work."
 authors = ["James Mishra <j@jamesmishra.com>"]
 license = "MIT"
@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "unwebpack_sourcemap.py"}]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8,<3.12"
 beautifulsoup4 = "4.7.1"
 certifi = ">=2022.12.7"
 chardet = "3.0.4"
@@ -21,6 +21,7 @@ urllib3 = "*"
 mypy = "^0.991"
 black = "^22.12.0"
 isort = "^5.11.4"
+pyinstaller = "^5.7.0"
 
 [build-system]
 requires = ["poetry-core"]
