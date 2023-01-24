@@ -12,24 +12,24 @@ If you're unfamiliar with source maps, you can read:
 * ["Use a source map"][6] by Firefox Source Docs
 
 ## Installation
-### 1. Create a new Python virtualenv in a directory named `venv`.
+#### 1. Create a new Python virtualenv in a directory named `venv`.
 ```
 python3 -m venv venv
 ```
 
-### 2. Activate the virtualenv.
+#### 2. Activate the virtualenv.
 ```
 source venv/bin/activate
 ```
 
-### 3. Install unwebpack-sourcemap from PyPI.
+#### 3. Install unwebpack-sourcemap from PyPI.
 ```
 python3 -m pip install unwebpack-sourcemap
 ```
 Note: unwebpack-sourcemap comes with Python dependencies that may conflict with the dependencies in your system installation of Python. That is why it is important to **always install unwebpack-sourcemap inside of a virtualenv,**
 which won't make any changes to your surrounding system.
 
-### 4. Try running unwebpack-sourcemap.
+#### 4. Try running unwebpack-sourcemap.
 ```
 unwebpack-sourcemap --help
 ```
@@ -66,7 +66,7 @@ unwebpack-sourcemap --make-directory --detect https://pathto.example.com/spa_roo
 ```
 
 ## License and credit
-unwebpack-sourcemap was [originally][1] published by [rarecoil][2] under the [MIT license][3].
+unwebpack-sourcemap was [originally][1] published by [rarecoil][2] under the [MIT license][3]. rarecoil has also published a blog post [explaining the design and functionality][7] of the original version of unwebpack-sourcemap.
 
 This repository is a fork of unwebpack-sourcemap maintained by [James Mishra][4] and packaged for PyPI.
 
@@ -78,3 +78,4 @@ This repository is also licensed under the MIT license.
 [4]: https://github.com/jamesmishra
 [5]: https://developer.chrome.com/blog/sourcemaps/
 [6]: https://firefox-source-docs.mozilla.org/devtools-user/debugger/how_to/use_a_source_map/index.html
+[7]: https://medium.com/@rarecoil/spa-source-code-recovery-by-un-webpacking-source-maps-ef830fc2351d
