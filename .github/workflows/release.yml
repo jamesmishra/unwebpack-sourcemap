@@ -9,7 +9,8 @@ on:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
-permissions: write-all
+permissions:
+  contents: write
 
 jobs:
   release:
@@ -47,7 +48,7 @@ jobs:
 
     - name: Get the version from the GitHub tag.
       id: get_version
-      run: echo "{VERSION}={${GITHUB_REF/refs\/tags\/v/}}" >> $GITHUB_OUTPUT
+      run: echo VERSION=${GITHUB_REF/refs\/tags\/v/} >> $GITHUB_OUTPUT
 
     - name: Build the wheel (Ubuntu only).
       id: publish_to_pypi
@@ -56,12 +57,15 @@ jobs:
         python3 -m poetry build
       if: startsWith(matrix.os,'ubuntu')
 
-    - name: Publish wheel to PyPI (Ubuntu only).
-      id: publish_wheel_to_poetry
-      run: python3 -m poetry publish --no-interaction
-      if: startsWith(matrix.os,'ubuntu')
-      env:
-        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
+    - name: Create GitHub release (Ubuntu only).
+      uses: softprops/action-gh-release@v1
+      draft: false
+      prerelease: false
+      fail_on_unmatched_files: true
+      with:
+        files: |
+          Release.txt
+          LICENSE
 
     - name: Create GitHub release (Ubuntu only).
       id: create_release
@@ -110,6 +114,13 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} 
-        asset_path: ./dist/unwebpack_sourcemap
+        asset_path: ./dist/unwebpack-sourcemap
         asset_name: unwebpack-sourcemap-${{ steps.get_version.outputs.VERSION }}-${{ runner.os }}-${{ runner.arch }}
         asset_content_type: application/octet-stream
+
+    - name: Publish wheel to PyPI (dry-run) (Ubuntu only).
+      id: publish_wheel_to_poetry
+      run: python3 -m poetry publish --no-interaction --dry-run
+      if: startsWith(matrix.os,'ubuntu')
+      env:
+        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
