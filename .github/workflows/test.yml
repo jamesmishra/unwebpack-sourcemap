@@ -1,0 +1,62 @@
+name: test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+    tags-ignore:
+      - 'v*' # Don't run these tests twice when cutting a new version.
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+        os:
+          - "ubuntu-20.04"
+          - "ubuntu-22.04"
+          - "macos-10.15"
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install pip and poetry.
+      run: |
+        python3 -m pip install --upgrade pip wheel poetry
+        python3 -m poetry config virtualenvs.in-project true
+
+    - name: Install unpackweb-sourcemap.
+      run: |
+        python3 -m poetry install
+
+    - name: Download and build an example local app.
+      run: |
+        git clone https://github.com/vikpe/react-webpack-typescript-starter
+        cd react-webpack-typescript-starter
+        npm install
+        npm run build
+        cd ..
+
+    - name: Get a source map from the local app.
+      run: |
+        python3 -m poetry run unwebpack-sourcemap --make-directory --local ./react-webpack-typescript-starter/dist/js/*.min.js.map local-dir
+
+    - name: "Assume everything worked (TODO: add assertions)."
+      run: echo ":)"
+
+    - name: "Get a source map from a remote website (GitHub.com)."
+      run: |
+        python3 -m poetry run unwebpack-sourcemap --make-directory --detect https://github.com/ github-dir
+
+    - name: "Assume everything worked (TODO: add assertions)."
+      run: echo ":)"
