@@ -82,6 +82,7 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         fail_on_unmatched_files: true
+        append_body: true
         files: |
           dist/unwebpack-sourcemap-*
       if: startsWith(matrix.os,'macos')
