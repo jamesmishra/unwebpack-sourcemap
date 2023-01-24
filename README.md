@@ -42,17 +42,17 @@ If you have installed unwebpack-sourcemap in a virtualenv, but want to avoid act
 These examples use the `--make-directory` flag to create a subdirectory named `output_dir`.
 You can omit the `--make-directory` if you want to use an existing empty directory.
 
-### Unpacking a sourcemap on the local filesystem
+#### Example #1: Unpacking a sourcemap on the local filesystem
 ```
 unwebpack-sourcemap --make-directory --local /path/to/source.map output_dir
 ```
 
-### Unpacking a sourcemap on a remote website
+#### Example #2: Unpacking a sourcemap on a remote website
 ```
 unwebpack-sourcemap --make-directory https://pathto.example.com/source.map output_dir
 ```
 
-### Unpacking a sourcemap on a remote website (*with autodetection*)
+#### Example #3: Unpacking a sourcemap on a remote website (*with autodetection*)
 To attempt to read all `<script src>` on an HTML page, fetch JS assets, look for `sourceMappingURI`, and pull sourcemaps from remote sources:
 
 This will:
