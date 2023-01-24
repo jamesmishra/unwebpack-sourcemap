@@ -61,18 +61,30 @@ jobs:
       id: build_pyinstaller_binary
       run: python3 -m poetry run pyinstaller --name=unwebpack-sourcemap-${{ steps.get_version.outputs.VERSION }}-${{ runner.os }}-${{ runner.arch }} --onefile --clean --noconfirm unwebpack_sourcemap.py
 
-    - name: Create GitHub release and upload assets.
-      id: create_release
+    - name: Create GitHub release and upload assets (Ubuntu).
+      id: create_release_ubuntu
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ github.ref }}
         name: Release ${{ github.ref }}
         draft: false
         prerelease: false
+        fail_on_unmatched_files: true
         files: |
           dist/unwebpack-sourcemap-*
           dist/unwebpack_sourcemap-${{ steps.get_version.outputs.VERSION }}*.whl
           dist/unwebpack_sourcemap-${{ steps.get_version.outputs.VERSION }}.tar.gz
+      if: startsWith(matrix.os,'ubuntu')
+
+    - name: Create GitHub release and upload assets (macOS).
+      id: create_release_macos
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.ref }}
+        fail_on_unmatched_files: true
+        files: |
+          dist/unwebpack-sourcemap-*
+      if: startsWith(matrix.os,'macos')
 
     - name: Publish wheel to PyPI (dry-run) (Ubuntu only).
       id: publish_wheel_to_poetry
