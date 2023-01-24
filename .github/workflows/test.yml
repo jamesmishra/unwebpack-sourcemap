@@ -26,9 +26,16 @@ jobs:
           - "macos-12"
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Check out the codebase.
+      uses: actions/checkout@v2
 
-    - uses: actions/setup-python@v2
+    - name: Set up Node.js 16.
+      uses: actions/setup-node@v3
+      with:
+        node-version: "16"
+
+    - name: Set up Python.
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
 
