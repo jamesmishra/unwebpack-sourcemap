@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "unwebpack-sourcemap"
 version = "0.1.0"
-description = "Recovers uncompiled TypeScript/JavaScript sources from Webpack source maps. A fork of rarecoil's work."
+description = "Recovers uncompiled TypeScript sources from Webpack sourcemaps. A fork of rarecoil's work."
 authors = ["James Mishra <j@jamesmishra.com>"]
 license = "MIT"
 readme = "README.md"
