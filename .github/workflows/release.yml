@@ -80,9 +80,9 @@ jobs:
           dist/unwebpack-sourcemap-*
       if: startsWith(matrix.os,'macos')
 
-    - name: Publish wheel to PyPI (dry-run) (Ubuntu only).
+    - name: Publish wheel to PyPI (Ubuntu only).
       id: publish_wheel_to_poetry
-      run: python3 -m poetry publish -vvv --no-interaction --dry-run
+      run: python3 -m poetry publish -vvv --no-interaction
       if: startsWith(matrix.os,'ubuntu')
       env:
         POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
