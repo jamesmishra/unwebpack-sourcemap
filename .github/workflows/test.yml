@@ -49,7 +49,7 @@ jobs:
 
     - name: Get a source map from the local app.
       run: |
-        python3 -m poetry run unwebpack-sourcemap --make-directory --local ./react-webpack-typescript-starter/dist/js/*.min.js.map
+        python3 -m poetry run unwebpack-sourcemap --make-directory --local ./react-webpack-typescript-starter/dist/js/*.min.js.map local-dir
 
     - name: "Assume everything worked (TODO: add assertions)."
       run: echo ":)"
