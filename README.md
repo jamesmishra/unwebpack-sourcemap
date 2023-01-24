@@ -1,65 +1,80 @@
 # unwebpack-sourcemap
 
-# Archive Notice (April 15 2022)
-
-This script seems to be helpful for many, but unfortunately I also do not have time to maintain it and properly code review the work of potential contributors. I'll leave it in an archived state for a while for anyone that wants to fork it, but I will eventually delete this repository.
-
-
-
 ### Recover uncompiled TypeScript sources, JSX, and more from Webpack sourcemaps.
 
-As single-page applications take over the world, more and more is being asked of the browser as a client. It is common for SPAs to use [Webpack](https://webpack.js.org/) to handle browser script build processes. Usually, Webpack will transpile React/Vue/TypeScript/etc. to JavaScript, minify/compress it, and then serve it as a single bundle to the application.
+This is a Python command line application that parses Webpack sourcemaps and returns uncompiled TypeScript sources.
 
-However, Webpack also produces [JavaScript source maps](https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/) to assist in the debugging and development process; when things go wrong, the browser's debugger can use the SourceMap to point to a line in the code that contains the issue at hand. Most developers do not adequately protect the source maps and ship them to production environments.
+unwebpack-sourcemap can process source maps on the local filesystem, or it can discover source maps on a remote website.
 
-When the browser was simply handling an array of JavaScript files concatenated and (maybe) packed, this wasn't so much of an issue. However, developers of SPAs assume the use of JavaScript as an **intermediate representation**. Developers often expect production to contain obfuscated and/or otherwise-processed scripts, and do not understand just what the sourcemaps contain in many cases. This model aligns closely with shipping binaries: source is compiled and you ship the interpretable version. If this is the case, the sourcemap is akin to leaking your source alongside the "binary" (bundle) you have made. The bundle can be reverse engineered just as a binary can, but sourcemaps make this far easier.
+## Introduction
+If you're unfamiliar with source maps, you can read:
+* ["Introduction to JavaScript Source Maps"][5] by Google Chrome Developers
+* ["Use a source map"][6] by Firefox Source Docs
 
-
-## Usage 
-
-The script requires Python3, `BeautifulSoup4` and `requests`. Install dependencies with `pip3 install -r requirements.txt`. The script can handle downloaded sourcemaps, or attempt to parse them from remote sources for you. In all of these cases, we will assume that you have a directory you have created called `output` alongside the script:
-
+## Installation
+### 1. Create a new Python virtualenv in a directory named `venv`.
 ```
-\$ mkdir output
-```
-
-In order of increasing noisiness, to unpack a local sourcemap:
-
-```
-\$ ./unwebpack_sourcemap.py --local /path/to/source.map output
+python3 -m venv venv
 ```
 
-To unpack a remote sourcemap:
-
+### 2. Activate the virtualenv.
 ```
-\$ ./unwebpack_sourcemap.py https://pathto.example.com/source.map output
+source venv/bin/activate
 ```
 
+### 3. Install unwebpack-sourcemap from PyPI.
+```
+python3 -m pip install unwebpack-sourcemap
+```
+Note: unwebpack-sourcemap comes with Python dependencies that may conflict with the dependencies in your system installation of Python. That is why it is important to **always install unwebpack-sourcemap inside of a virtualenv,**
+which won't make any changes to your surrounding system.
+
+### 4. Try running unwebpack-sourcemap.
+```
+unwebpack-sourcemap --help
+```
+
+The below examples assume that you are inside of an **activated virtualenv**.
+
+If you have installed unwebpack-sourcemap in a virtualenv, but want to avoid activating it, you can find the unwebpack-sourcemap command in the location `venv/bin/unwebpack-sourcemap`.
+
+## Usage
+These examples use the `--make-directory` flag to create a subdirectory named `output_dir`.
+You can omit the `--make-directory` if you want to use an existing empty directory.
+
+### Unpacking a sourcemap on the local filesystem
+```
+unwebpack-sourcemap --make-directory --local /path/to/source.map output_dir
+```
+
+### Unpacking a sourcemap on a remote website
+```
+unwebpack-sourcemap --make-directory https://pathto.example.com/source.map output_dir
+```
+
+### Unpacking a sourcemap on a remote website (*with autodetection*)
 To attempt to read all `<script src>` on an HTML page, fetch JS assets, look for `sourceMappingURI`, and pull sourcemaps from remote sources:
 
+This will:
+1. read all of the `<script src=>` tags on an HTML page
+2. fetch JavaScript assets
+3. look for `sourceMappingURI` and pull the sourcemaps that are found.
+
+To do this, the command is:
 ```
-\$ ./unwebpack_sourcemap.py --detect https://pathto.example.com/spa_root/ output
+unwebpack-sourcemap --make-directory --detect https://pathto.example.com/spa_root/ output_dir
 ```
 
-## I'm a developer and this scares me. What do?
+## License and credit
+unwebpack-sourcemap was [originally][1] published by [rarecoil][2] under the [MIT license][3].
 
-You have a few options:
+This repository is a fork of unwebpack-sourcemap maintained by [James Mishra][4] and packaged for PyPI.
 
-1. Turn off sourcemaps in production entirely.
-1. Push sourcemaps to a private server, and ACL sourcemap URIs to developers only.
-1. Load sourcemaps from local sources only and do not push them to production.
+This repository is also licensed under the MIT license.
 
-
-## Example Vulnerable Application
-
-An example TypeScript+React application is included in `example-react-ts-app`. You can run this locally and run the script against it.
-
-
-## Contributions
-
-This is an alpha-level script built for a series of engagements I was working on in which sourcemaps are disclosed in production environments. It currently is only meant to work with TypeScript+React and TypeScript+Vue templates. Pull requests to harden the script, make it read more sourcemaps, et cetera are greatly appreciated.
-
-
-## License
-
-MIT.
+[1]: https://github.com/rarecoil/unwebpack-sourcemap
+[2]: https://github.com/rarecoil
+[3]: https://github.com/rarecoil/unwebpack-sourcemap/blob/master/LICENSE
+[4]: https://github.com/jamesmishra
+[5]: https://developer.chrome.com/blog/sourcemaps/
+[6]: https://firefox-source-docs.mozilla.org/devtools-user/debugger/how_to/use_a_source_map/index.html
