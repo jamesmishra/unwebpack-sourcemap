@@ -60,7 +60,6 @@ jobs:
       id: create_release_ubuntu
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.ref }}
         name: Release v${{ steps.get_version.outputs.VERSION }}
         draft: false
         prerelease: false
@@ -75,7 +74,6 @@ jobs:
       id: create_release_macos
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.ref }}
         fail_on_unmatched_files: true
         append_body: true
         files: |
