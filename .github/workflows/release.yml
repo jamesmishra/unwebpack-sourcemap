@@ -58,16 +58,6 @@ jobs:
       if: startsWith(matrix.os,'ubuntu')
 
     - name: Create GitHub release (Ubuntu only).
-      uses: softprops/action-gh-release@v1
-      with:
-        draft: false
-        prerelease: false
-        fail_on_unmatched_files: true
-        files: |
-          Release.txt
-          LICENSE
-
-    - name: Create GitHub release (Ubuntu only).
       id: create_release
       uses: actions/create-release@v1
       if: startsWith(matrix.os,'ubuntu')
